@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Registro de Clientes - RicoFit75</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4faff;
+      text-align: center;
+    }
+
+    h1 {
+      background-color: #cce5f7;
+      color: #000;
+      padding: 15px;
+    }
+
+    form {
+      background: #fff;
+      width: 350px;
+      margin: 30px auto;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .logo-fondo {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 800px;
+      opacity: 0.20;
+      transform: translate(-50%, -50%);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    form *:not(.logo-fondo) {
+      position: relative;
+      z-index: 1;
+    }
+
+    label {
+      display: block;
+      text-align: left;
+      margin: 10px 0 5px;
+      font-weight: bold;
+    }
+
+    input[type="text"], input[type="date"], input[type="number"], select {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .botones {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-around;
+    }
+
+    button {
+      background: linear-gradient(to bottom, #6dcff6, #007bbd);
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      box-shadow: 3px 3px 6px rgba(0,0,0,0.2);
+    }
+
+    button:hover {
+      background: linear-gradient(to bottom, #4ec0f0, #005f99);
+    }
+  </style>
+</head>
+<body>
+
+  <h1>REGISTRO DE CLIENTES</h1>
+
+  <form id="formRegistro">
+    <img src="logo.png" alt="RicoFit75" class="logo-fondo">
+
+    <label>Nombre cliente</label>
+    <input type="text" id="nombre">
+
+    <label>Fecha</label>
+    <input type="date" id="fecha">
+
+    <label>Monto</label>
+    <input type="number" id="monto">
+
+    <label>Tipo de pago</label>
+    <select id="pago">
+      <option value="">Selecciona una opción</option>
+      <option value="Diario">Diario</option>
+      <option value="Semanal">Semanal</option>
+      <option value="Mensual">Mensual</option>
+    </select>
+
+    <div class="botones">
+      <button type="button" onclick="buscar()">BUSCAR</button>
+      <button type="button" onclick="ingresar()">INGRESA</button>
+      <button type="reset">LIMPIAR</button>
+    </div>
+  </form>
+
+  <script>
+    const URL_WEB_APP = "https://script.google.com/macros/s/AKfycbyohjZrVnCtsCjcegZwTCnkbNrwUJ5TL_Jpa5r8pgnTxKg-OI8FrBUvkdHODf7ETgRY/exec";
+
+    function ingresar() {
+      const nombre = document.getElementById('nombre').value.trim();
+      const fecha = document.getElementById('fecha').value;
+      const monto = document.getElementById('monto').value.trim();
+      const pago = document.getElementById('pago').value;
+
+      if (!nombre || !fecha || !monto) {
+        alert("Por favor completa todos los campos");
+        return;
+      }
+
+      fetch(URL_WEB_APP, {
+        method: "POST",
+        body: JSON.stringify({ nombre, fecha, monto, pago }),
+        headers: { "Content-Type": "application/json" }
+      })
+      .then(response => response.json())
+      .then(data => {
+        if(data.result === "success") {
+          alert("✅ Cliente ingresado correctamente!");
+          document.getElementById('formRegistro').reset();
+        } else {
+          alert("❌ Error al enviar datos: " + data.message);
+        }
+      })
+      .catch(err => alert("❌ Error de conexión: " + err));
+    }
+
+    function buscar() {
+      alert("🔍 Función de búsqueda en desarrollo 😅");
+    }
+  </script>
+
+</body>
+</html>
