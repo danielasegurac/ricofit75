@@ -124,11 +124,13 @@
         return;
       }
 
-      fetch(URL_WEB_APP, {
-        method: "POST",
-        body: JSON.stringify({ nombre, fecha, monto, pago }),
-        headers: { "Content-Type": "application/json" }
-      })
+      const respuesta = await fetch("https://script.google.com/macros/s/AKfycbyohjZrVnCtsCjcegZwTCnkbNrwUJ5TL_Jpa5r8pgnTxKg-OI8FrBUvkdHODf7ETgRY/exec", {
+  method: "POST",
+  mode: "no-cors",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ nombre, fecha, monto, pago })
+});
+
       .then(response => response.json())
       .then(data => {
         if(data.result === "success") {
@@ -148,3 +150,4 @@
 
 </body>
 </html>
+
